@@ -13,19 +13,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * ÁÄÌì·şÎñÆ÷£¬Ö§³ÖÈºÁÄ,Ïàµ±ÓÚopenfire
+ * èŠå¤©æœåŠ¡å™¨ï¼Œæ”¯æŒç¾¤èŠ,ç›¸å½“äºopenfire
  * 
- * ÓĞÒ»¸öĞÂÓÃ»§£¬»á½¨Ò»¸ösocketÁ¬½Ó£¬»áÆôÒ»¸öÏß³Ì
- * socketÁ¬½ÓÖ»ÓĞÔÚÓÃ»§ÍË³öµÄÊ±ºò²Å»á¹Ø±Õ¡£
- * @author pjy
+ * æœ‰ä¸€ä¸ªæ–°ç”¨æˆ·ï¼Œä¼šå»ºä¸€ä¸ªsocketè¿æ¥ï¼Œä¼šå¯ä¸€ä¸ªçº¿ç¨‹
+ * socketè¿æ¥åªæœ‰åœ¨ç”¨æˆ·é€€å‡ºçš„æ—¶å€™æ‰ä¼šå…³é—­ã€‚
+ * @author zhuochen
  *
  */
 public class SocketServer {
-	//Ã¿¸ö°àÖ»²¿ÊğÒ»·İ£¬
-	//ÆäËûÍ¬Ñ§ telnet ip 15898
-	//0-1023£¬¶Ë¿ÚºÅ×î´óÖµ65535
-	//Ò»¸ö×éÖ»ÄÜÓĞÒ»¸öserver
-    private static final int PORT = 15898;//´óÓÚ1024
+	//æ¯ä¸ªç­åªéƒ¨ç½²ä¸€ä»½ï¼Œ
+	//å…¶ä»–åŒå­¦ telnet ip 15898
+	//0-1023ï¼Œç«¯å£å·æœ€å¤§å€¼65535
+	//ä¸€ä¸ªç»„åªèƒ½æœ‰ä¸€ä¸ªserver
+    private static final int PORT = 15898;//å¤§äº1024
     private List<Socket> socketList = new ArrayList<Socket>();
     private ServerSocket server = null;
     private ExecutorService threadPool = null; //thread pool
@@ -35,19 +35,19 @@ public class SocketServer {
     }
     public SocketServer() {
         try {
-        	//Èç¹ûÓĞ¿Í»§¶Ë·¢ĞÅÏ¢µ½15898Õâ¸ö¶Ë¿Ú£¬²Ù×÷ÏµÍ³»á°ÑĞÅÏ¢½»¸øÎÒÃÇÕâ¸ö³ÌĞò´¦Àí
+        	//å¦‚æœæœ‰å®¢æˆ·ç«¯å‘ä¿¡æ¯åˆ°15898è¿™ä¸ªç«¯å£ï¼Œæ“ä½œç³»ç»Ÿä¼šæŠŠä¿¡æ¯äº¤ç»™æˆ‘ä»¬è¿™ä¸ªç¨‹åºå¤„ç†
             server = new ServerSocket(PORT);
             threadPool = Executors.newCachedThreadPool();  //create a thread pool
             System.out.println("server start ...");
-            //socketClient´ú±íµÄÊÇÓëÄ³Ò»¸ö¿Í»§¶ËµÄÁ¬½Ó            
+            //socketClientä»£è¡¨çš„æ˜¯ä¸æŸä¸€ä¸ªå®¢æˆ·ç«¯çš„è¿æ¥            
             Socket socketClient = null;
             while(true) {
-            	//¿Í»§¶Ë¸úÎÒÃÇ·şÎñÆ÷¶Ë½¨Á¢Á¬½ÓÖ®ºó£¬´´½¨socketClient¶ÔÏó
+            	//å®¢æˆ·ç«¯è·Ÿæˆ‘ä»¬æœåŠ¡å™¨ç«¯å»ºç«‹è¿æ¥ä¹‹åï¼Œåˆ›å»ºsocketClientå¯¹è±¡
                 socketClient = server.accept();
                 
                 socketList.add(socketClient);
-              //  System.out.println("ÓĞ"+mList.size()+"¸öÁ¬½Ó ");
-                System.out.println("ÓĞÁ¬½Ó ");
+              //  System.out.println("æœ‰"+mList.size()+"ä¸ªè¿æ¥ ");
+                System.out.println("æœ‰è¿æ¥ ");
                 threadPool.execute(new Service(socketClient)); //start a new thread to handle the connection
             }
         }catch (Exception e) {
@@ -65,8 +65,8 @@ public class SocketServer {
                     in = new BufferedReader(new InputStreamReader(
                     		socketClient.getInputStream()));
                     
-                    msg = "user" +this.socketClient.getInetAddress() + "¿Í»§¶Ë¸öÊı:"
-                        +socketList.size()+"Ïß³Ìid:"+Thread.currentThread().getId();
+                    msg = "user" +this.socketClient.getInetAddress() + "å®¢æˆ·ç«¯ä¸ªæ•°:"
+                        +socketList.size()+"çº¿ç¨‹id:"+Thread.currentThread().getId();
                     this.sendmsg();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -81,7 +81,7 @@ public class SocketServer {
                     while(true) {
                         if((msg = in.readLine())!= null) {
                             if(msg.equals("exit")) {
-                                System.out.println("ÓĞ¿Í»§¶ËÍË³ö");
+                                System.out.println("æœ‰å®¢æˆ·ç«¯é€€å‡º");
                                 socketList.remove(socketClient);
                                 in.close();
                                 msg = "user:" + socketClient.getInetAddress()
@@ -90,9 +90,9 @@ public class SocketServer {
                                 this.sendmsg();
                                 break;
                             } else {
-                            	//×´Ì¬Âë|ÏûÏ¢ÀàĞÍ|ÏûÏ¢jsonÊı¾İ
+                            	//çŠ¶æ€ç |æ¶ˆæ¯ç±»å‹|æ¶ˆæ¯jsonæ•°æ®
                                 msg = "{'user ip':'"+socketClient.getInetAddress() + "','msg':'" + msg+"'} ";
-                               System.out.println("sever ÊÕµ½"+msg);
+                               System.out.println("sever æ”¶åˆ°"+msg);
                                 this.sendmsg();
                             }
                         }
@@ -101,14 +101,14 @@ public class SocketServer {
                     e.printStackTrace();
                 }
             }
-          //socket¶ÔÏóÔÚÄÚ´æÖĞ¡£¿Í»§¶Ë²»·¢ÇëÇó£¬·şÎñÆ÷¶ËÒ²¿ÉÒÔÖ÷¶¯Ïò¿Í»§¶Ë·¢Êı¾İ
-           //httpµÄÌØµãÊÇ±ØĞëÊÇ¿Í»§¶ËÏÈ·¢ÇëÇó£¬·şÎñÆ÷¶Ë²ÅÄÜ·µ¼ÓÊı¾İ¡£
+          //socketå¯¹è±¡åœ¨å†…å­˜ä¸­ã€‚å®¢æˆ·ç«¯ä¸å‘è¯·æ±‚ï¼ŒæœåŠ¡å™¨ç«¯ä¹Ÿå¯ä»¥ä¸»åŠ¨å‘å®¢æˆ·ç«¯å‘æ•°æ®
+           //httpçš„ç‰¹ç‚¹æ˜¯å¿…é¡»æ˜¯å®¢æˆ·ç«¯å…ˆå‘è¯·æ±‚ï¼ŒæœåŠ¡å™¨ç«¯æ‰èƒ½è¿”åŠ æ•°æ®ã€‚
            public void sendmsg() {
                
                int socketClinetNumber =socketList.size();
-               //¸øËùÓĞµÄ¿Í»§¶Ë·¢Êı¾İ,ËµÃ÷1ÊÇÍÆËÍ 2£¬ÊÇÈºÁÄ
+               //ç»™æ‰€æœ‰çš„å®¢æˆ·ç«¯å‘æ•°æ®,è¯´æ˜1æ˜¯æ¨é€ 2ï¼Œæ˜¯ç¾¤èŠ
                for (int index = 0; index < socketClinetNumber; index ++) {
-                   //Socket²úÉúÒ»¸öip[tcp[msg]]
+                   //Socketäº§ç”Ÿä¸€ä¸ªip[tcp[msg]]
             	   Socket socketClient = socketList.get(index);
                    PrintWriter pout = null;
                    try {
